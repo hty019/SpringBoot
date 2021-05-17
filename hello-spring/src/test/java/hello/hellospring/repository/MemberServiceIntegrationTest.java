@@ -28,10 +28,8 @@ class MemberServiceIntegrationTest {
         //given
         Member member = new Member();
         member.setName("spring");
-
         //when
         Long saveId = memberService.join(member);
-
         //then
         Member findMember = memberService.findOne(saveId).get();
         assertThat(member.getName()).isEqualTo(findMember.getName());
@@ -55,13 +53,13 @@ class MemberServiceIntegrationTest {
     public void findAll(){
         Member member1 = new Member();
         member1.setName("spring1");
-        repository.save(member1);
+        memberRepository.save(member1);
 
         Member member2 = new Member();
         member2.setName("spring2");
-        repository.save(member2);
+        memberRepository.save(member2);
 
-        List<Member> result = repository.findAll();
+        List<Member> result = memberRepository.findAll();
 
         assertThat(result.size()).isEqualTo(2);
 

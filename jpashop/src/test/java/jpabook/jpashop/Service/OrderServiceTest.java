@@ -67,7 +67,7 @@ public class OrderServiceTest {
 
         Long orderId = orderService.order(member.getId(), book.getId(), 2);
 
-        orderService.cancel(orderId);
+        orderService.cancelOrder(orderId);
 
         Order order = orderRepository.findOne(orderId);
         assertEquals("주문상태가 취소여야한다.", OrderStatus.CANCEL, order.getStatus());

@@ -72,9 +72,6 @@ public class OrderServiceTest {
         Order order = orderRepository.findOne(orderId);
         assertEquals("주문상태가 취소여야한다.", OrderStatus.CANCEL, order.getStatus());
         assertEquals("재고가 복구되어야한다.",10,book.getStockQuantity());
-
-
-
     }
 
     private Item getBook(String name, int price, int stockQuantity) {

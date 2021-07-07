@@ -1,6 +1,6 @@
-package jpabook.jpashop.Service;
+package jpabook.jpashop.service;
 
-import jpabook.jpashop.Repository.OrderRepository;
+import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;

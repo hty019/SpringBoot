@@ -2,6 +2,7 @@ package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -33,6 +34,10 @@ public class OrderRepository {
                 .setMaxResults(1000) // 최대 1000건
                 .getResultList();
     }
+
+//    public List<Order> findAll(OrderSearch orderSearch) {
+//
+//    }
 
     public List<Order> findAllByString(OrderSearch orderSearch) {
         //language=JPAQL

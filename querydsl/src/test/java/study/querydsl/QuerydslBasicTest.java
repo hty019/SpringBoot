@@ -28,30 +28,31 @@ public class QuerydslBasicTest {
 
     JPAQueryFactory queryFactory;
 
-    @BeforeEach
-            public void before() {
-        queryFactory =  new JPAQueryFactory(em);
-    }
 //    @BeforeEach
-//    public void before() {
-//        Team teamA = new Team("teamA");
-//        Team teamB = new Team("teamB");
-//        em.persist(teamA);
-//        em.persist(teamB);
+//            public void before() {
 //
-//        Member member1 = new Member("member1",10,teamA);
-//        Member member2 = new Member("member2",20,teamA);
-//        Member member3 = new Member("member3",30,teamB);
-//        Member member4 = new Member("member4",40,teamB);
-//
-//        em.persist(member1);
-//        em.persist(member2);
-//        em.persist(member3);
-//        em.persist(member4);
-//
-//        em.flush();
-//        em.clear();
 //    }
+    @BeforeEach
+    public void before() {
+        queryFactory =  new JPAQueryFactory(em);
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        em.persist(teamA);
+        em.persist(teamB);
+
+        Member member1 = new Member("member1",10,teamA);
+        Member member2 = new Member("member2",20,teamA);
+        Member member3 = new Member("member3",30,teamB);
+        Member member4 = new Member("member4",40,teamB);
+
+        em.persist(member1);
+        em.persist(member2);
+        em.persist(member3);
+        em.persist(member4);
+
+        em.flush();
+        em.clear();
+    }
     @Test
     public void startJPQL() {
         //member1을 찾아라
@@ -99,16 +100,16 @@ public class QuerydslBasicTest {
 //                .selectFrom(QMember.member)
 //                .fetchFirst();
 
-//        QueryResults<Member> results = queryFactory
-//                .selectFrom(member)
-//                .fetchResults();
-//
-//        results.getTotal(); // select count(~)
-//        List<Member> content = results.getResults(); // select m from member m
-
-        long count = queryFactory
+        QueryResults<Member> results = queryFactory
                 .selectFrom(member)
-                .fetchCount(); // 위 쿼리 select절을 카운트 쿼리로 변환하여 출력
+                .fetchResults();
+//
+        results.getTotal(); // select count(~)
+        List<Member> content = results.getResults(); // select m from member m
+
+//        long count = queryFactory
+//                .selectFrom(member)
+//                .fetchCount(); // 위 쿼리 select절을 카운트 쿼리로 변환하여 출력
     }
 
     /**

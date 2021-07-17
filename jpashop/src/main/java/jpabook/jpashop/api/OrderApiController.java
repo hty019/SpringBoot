@@ -1,5 +1,8 @@
 package jpabook.jpashop.api;
 
+import jpabook.jpashop.api.order.query.OrderQueryDto;
+import jpabook.jpashop.api.order.query.OrderQueryItemDto;
+import jpabook.jpashop.api.order.query.OrderQueryRepository;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -63,6 +68,14 @@ public class OrderApiController {
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
         return collect;
+    }
+
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(@RequestParam(value="offset", defaultValue = "0") int offset,
+                                        @RequestParam(value="limit", defaultValue = "100") int limit)
+    {
+        List<OrderQueryDto> results = orderQueryRepository.findOrders(offset, limit);
+        return results;
     }
 
     @Getter

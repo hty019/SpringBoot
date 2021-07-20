@@ -6,6 +6,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -429,7 +430,7 @@ public class QuerydslBasicTest {
 
     @Test
     public void dynamicQuery_WhereParam() throws Exception {
-        String usernameParam = "member1";
+        String usernameParam = null;
         Integer ageParam = 10;
 
         List<Member> result = searchMember2(usernameParam, ageParam);
@@ -439,21 +440,65 @@ public class QuerydslBasicTest {
     private List<Member> searchMember2(String usernameParam, Integer ageParam) {
         return queryFactory
                 .selectFrom(member)
-                .where(null, usernameEq(usernameParam), ageEq(ageParam))
+                .where(usernameEq(usernameParam),ageEq(ageParam))
+//                .where(allEq(usernameParam,ageParam))
                 .fetch();
     }
 
     private Predicate usernameEq(String usernameParam) {
-        if (usernameParam == null) {
-            return null;
-        }
-        return member.username.eq(usernameParam);
+        return usernameParam == null ? null : member.username.eq(usernameParam);
     }
 
     private Predicate ageEq(Integer ageParam) {
-        if (ageParam == null) {
-            return null;
-        }
-        return member.age.eq(ageParam);
+        return ageParam == null ? null : member.age.eq(ageParam);
+    }
+//    private BooleanExpression usernameEq(String usernameCond) {
+//        return usernameCond == null ? null : member.username.eq(usernameCond);
+//    }
+//
+//    private BooleanExpression ageEq(Integer ageCond) {
+//        return ageCond == null ? null : member.age.eq(ageCond);
+//    }
+//    private Predicate allEq(String usernameCond, Integer ageCond) {
+//        return usernameEq(usernameCond).and(ageEq((ageCond)));
+//    }
+
+    @Test
+    public void bulkUpdate() throws Exception {
+
+        long 비회원 = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        em.flush();
+        em.clear();
+    }
+
+    @Test
+    public void bulkAdd() throws Exception {
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+    }
+
+    @Test
+    public void bulkDelete() throws Exception {
+        long count = queryFactory
+                .delete(member)
+                .where(member.age.gt(18))
+                .execute();
+    }
+
+    @Test
+    public void sqlFunction() throws Exception {
+        queryFactory
+                .select(Expressions.stringTemplate(
+                        "function('replace',{0},{1},{2})",
+                        member.username, "member", "M"))
+                .from(member)
+                .fetch();
     }
 }

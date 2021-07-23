@@ -445,23 +445,23 @@ public class QuerydslBasicTest {
                 .fetch();
     }
 
-    private Predicate usernameEq(String usernameParam) {
-        return usernameParam == null ? null : member.username.eq(usernameParam);
-    }
-
-    private Predicate ageEq(Integer ageParam) {
-        return ageParam == null ? null : member.age.eq(ageParam);
-    }
-//    private BooleanExpression usernameEq(String usernameCond) {
-//        return usernameCond == null ? null : member.username.eq(usernameCond);
+//    private Predicate usernameEq(String usernameParam) {
+//        return usernameParam == null ? null : member.username.eq(usernameParam);
 //    }
 //
-//    private BooleanExpression ageEq(Integer ageCond) {
-//        return ageCond == null ? null : member.age.eq(ageCond);
+//    private Predicate ageEq(Integer ageParam) {
+//        return ageParam == null ? null : member.age.eq(ageParam);
 //    }
-//    private Predicate allEq(String usernameCond, Integer ageCond) {
-//        return usernameEq(usernameCond).and(ageEq((ageCond)));
-//    }
+    private BooleanExpression usernameEq(String usernameCond) {
+        return usernameCond == null ? null : member.username.eq(usernameCond);
+    }
+
+    private BooleanExpression ageEq(Integer ageCond) {
+        return ageCond == null ? null : member.age.eq(ageCond);
+    }
+    private BooleanExpression allEq(String usernameCond, Integer ageCond) {
+        return usernameEq(usernameCond) != null ? usernameEq(usernameCond).and(ageEq(ageCond)) : ageEq(ageCond);
+    }
 
     @Test
     public void bulkUpdate() throws Exception {

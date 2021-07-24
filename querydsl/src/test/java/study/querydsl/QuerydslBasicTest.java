@@ -222,7 +222,7 @@ public class QuerydslBasicTest {
         //when
         for (Tuple tuple : result) {
             System.out.println("tuple = " + tuple);
-        }
+        }//HTTP를 공부하러 갈 것이다.
     }
 
     @Test
